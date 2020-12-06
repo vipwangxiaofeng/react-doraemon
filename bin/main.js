@@ -3,7 +3,8 @@ const chalk = require('chalk')
 function camelize (str) {
   return str.replace(/-(\w)/g, (_, c) => c ? c.toUpperCase() : '')
 }
-// 获取参数
+// 获取参数 <app-name> -options
+// 获取options
 function cleanArgs(cmd) {
 	const args = {}
 	cmd.options.forEach((o) => {
@@ -36,7 +37,8 @@ if (semver.satisfies(process.version, '9.x')) {
 // 开始处理命令
 const program = require('commander')
 program
-  .version(require('../package').version, '-v, --version', 'current version')
+	.version(require('../package').version, '-v, --version', 'current version')
+	.name('react-doraemon')
   .usage('<command> [options]')
 
 const minimist = require('minimist')
@@ -45,16 +47,26 @@ const minimist = require('minimist')
 // 创建命令
 // node main.js create appname -p presetName
 program
+	.on('--help', () => {
+		console.log('');
+		console.log('Illustrate:');
+		console.log('create [options] <app-name>   create a new react app');
+		console.log('Optional [options]');
+		console.log('empty                         create a default react app');
+		console.log('-m --mobx                     create a react app with mobx');
+		console.log('-d --dva                      create a react app with dva');
+		console.log('-r --redux                    create a react app with redux');
+	})
 	.command('create <app-name>')
-	.description('create a new project')
-	.option('-p, --preset <presetName>', 'Skip prompts and use saved or remote preset')
-	.option('-d, --default', 'Skip prompts and use default preset')
+	.description('create a new react app')
+	.option('-m, --mobx', 'create a react app with mobx')
+	.option('-d, --dva', 'create a react app with dva')
+	.option('-r, --redux', 'create a react app with redux')
 	.action((name, cmd) => {
 		const options = cleanArgs(cmd)
 		if (minimist(process.argv.slice(3))._.length > 1) {
 			console.log(chalk.yellow('\n ⚠️  检测到您输入了多个名称，将以第一个参数为项目名，舍弃后续参数哦'))
     }
-    // console.log(name,minimist(process.argv.slice(3))._,options)
 		require('../lib/create')(name, options)
   })
 
