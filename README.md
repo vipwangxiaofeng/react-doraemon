@@ -5,8 +5,28 @@ npm install -g react-doraemon
 
 ## Usage
 ```
-react-doraemon create <app-name>
+react-doraemon create [options] <app-name>
 ```
+## Example
+
+> create a new react app
+
+`react-doraemon create my-project`
+
+
+> create a react app with mobx
+
+`react-doraemon create -m my-project`
+
+
+> create a react app with dva
+
+`react-doraemon create -d my-project`
+
+
+> create a react app with redux
+
+`react-doraemon create -r my-project`
 
 ## Keywords
 
